@@ -1,26 +1,69 @@
 import React, { Component } from "react";
 import Grid from '@material-ui/core/Grid';
+import {withStyles} from '@material-ui/core/styles'
 import SortSelector from './SortSelector';
+import PostsList from './PostsList';
+import Client from '../Client';
+
+const styles = {
+  grid: {
+    padding: 20
+  }
+}
 
 class PostsPage extends Component{
   constructor(props){
     super(props); 
     this.state = {
-      sortby: 'new'
+      sortby: 'new',
+      posts: [],
+      before: null, // reddit API uses this for pagination
+      after: null  // reddit API uses this for pagination
     };
+  }
+  componentDidMount(){
+    Client.get(this.state.sortby, (results) =>{
+      this.setState({
+        posts: results.data.children,
+        before: results.data.before,
+        after: results.data.after
+      })
+    })
+  }
+  componentDidUpdate(prevProps, prevState){
+    if(prevState.sortby !== this.state.sortby){
+      Client.get(this.state.sortby, (results) =>{
+        this.setState({
+          posts: results.data.children,
+          before: results.data.before,
+          after: results.data.after
+        })
+      })
+    }
   }
 
   handleChange = event => {
+    console.log(event)
     this.setState({ [event.target.name]: event.target.value });
   };
   render(){
+    const {classes} = this.props; 
     return(
       <Grid container>
-        <Grid item xs={12}>
-          <SortSelector onChange={this.handleChange} sortby={this.state.sortby} />
+        <Grid item xs={12} className={classes.grid}>
+          <SortSelector 
+            onChange={this.handleChange.bind(this)} 
+            sortby={this.state.sortby} />
+        </Grid>
+        <Grid item xs={12} className={classes.grid}>
+          <PostsList 
+            posts={this.state.posts}
+            selectPost={this.props.selectPost}
+             />
+            }
         </Grid>
       </Grid>      
     )
   }
 }
-export default PostsPage
+export default withStyles(styles)(PostsPage)

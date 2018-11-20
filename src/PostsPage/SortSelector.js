@@ -13,7 +13,7 @@ const styles = theme => ({
   },
   formControl: {
     margin: theme.spacing.unit,
-    minWidth: 120,
+    minWidth: 200,
   }
 });
 
@@ -22,35 +22,31 @@ const endpoints = [
 ];
 
 
-class SortSelector extends React.Component {
-
-  render() {
-    const { classes } = this.props;
-
-    return (
-      <form className={classes.root} autoComplete="off">
-        <FormControl className={classes.formControl}>
-          <InputLabel htmlFor="sortby">Sort By</InputLabel>
-          <Select
-            value={this.props.sortby}
-            onChange={this.props.handleChange}
-            inputProps={{
-              name: 'sortby',
-              id: 'sortby',
-            }}
-          >
-            {
-              endpoints.map(endpoint =>{
-                return (
-                  <MenuItem value={endpoint} key={endpoint}>{endpoint}</MenuItem>
-                )
-              })
-            }
-          </Select>
-        </FormControl>
-      </form>
-    );
-  }
+function SortSelector (props) {
+  const {classes} = props;
+  return (
+    <form className={classes.root} autoComplete="off">
+      <FormControl className={classes.formControl}>
+        <InputLabel htmlFor="sortby">Sort By</InputLabel>
+        <Select
+          value={props.sortby}
+          onChange={props.onChange}
+          inputProps={{
+            name: 'sortby',
+            id: 'sortby',
+          }}
+        >
+          {
+            endpoints.map(endpoint =>{
+              return (
+                <MenuItem value={endpoint} key={endpoint}>{endpoint}</MenuItem>
+              )
+            })
+          }
+        </Select>
+      </FormControl>
+    </form>
+  );
 }
 
 SortSelector.propTypes = {
