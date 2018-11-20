@@ -17,10 +17,6 @@ const styles = theme => ({
   }
 });
 
-const endpoints = [
-  'new', 'hot', 'rising', 'controversial',  'top' 
-];
-
 
 function SortSelector (props) {
   const {classes} = props;
@@ -37,7 +33,7 @@ function SortSelector (props) {
           }}
         >
           {
-            endpoints.map(endpoint =>{
+            props.endpoints.map(endpoint =>{
               return (
                 <MenuItem value={endpoint} key={endpoint}>{endpoint}</MenuItem>
               )

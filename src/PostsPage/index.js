@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Grid from '@material-ui/core/Grid';
 import {withStyles} from '@material-ui/core/styles'
-import SortSelector from './SortSelector';
+import SortSelector from '../shared/SortSelector';
 import PostsList from './PostsList';
 import Client from '../Client';
 
@@ -10,12 +10,15 @@ const styles = {
     padding: 20
   }
 }
+const endpoints = [
+  'top','hot', 'rising', 'new', 'controversial', 'gilded' 
+];
 
 class PostsPage extends Component{
   constructor(props){
     super(props); 
     this.state = {
-      sortby: 'new',
+      sortby: 'hot',
       posts: [],
       after: null  // reddit API uses this for pagination
     };
@@ -62,6 +65,7 @@ class PostsPage extends Component{
       <Grid container>
         <Grid item xs={12} className={classes.grid}>
           <SortSelector 
+            endpoints={endpoints}
             onChange={this.handleChange.bind(this)} 
             sortby={this.state.sortby} />
         </Grid>

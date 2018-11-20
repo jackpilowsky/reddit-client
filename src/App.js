@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Header from './layout/Header'
 import PostsPage from './PostsPage'
+import CommentsPage from './CommentsPage'
 
 class App extends Component {
   constructor(props){
@@ -14,11 +15,21 @@ class App extends Component {
       selectedPost: post
     })
   }
+  unselectPost(){
+    this.setState({
+      selectedPost: null
+    }) 
+  }
   render() {
     return (
       <div className="App">
         <Header />
-        <PostsPage selectPost={this.selectPost.bind(this)} />
+        {!this.state.selectedPost &&
+          <PostsPage selectPost={this.selectPost.bind(this)} />
+        }
+        {this.state.selectedPost &&
+          <CommentsPage post={this.state.selectedPost} unselectPost={this.unselectPost.bind(this)} />
+        }
       </div>
     );
   }

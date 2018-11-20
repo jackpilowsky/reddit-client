@@ -45,7 +45,7 @@ class PostLists extends Component{
               <Fragment key={uniqueID}>
                 {!isNSFW && /* I'm already setting the nsfw flag to 0 but some nsfw stuff not properly marked */
                   <Grid item className={classes.grid}>
-                    <a className={classes.a} href="#" onClick={this.props.selectPost.bind(this, data)}>
+                    <a className={classes.a} href="#" onClick={this.props.selectPost.bind(this, listing)}>
                       <Paper className={classes.paper}>
                         {data.thumbnail !== 'self' && data.thumbnail !== 'default' &&
                           <img className={classes.thumbnail} src={data.thumbnail} alt={data.title} />
