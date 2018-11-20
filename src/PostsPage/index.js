@@ -17,33 +17,43 @@ class PostsPage extends Component{
     this.state = {
       sortby: 'new',
       posts: [],
-      before: null, // reddit API uses this for pagination
       after: null  // reddit API uses this for pagination
     };
   }
   componentDidMount(){
-    Client.get(this.state.sortby, (results) =>{
+    Client.get(this.state.sortby, {},(results) =>{
       this.setState({
         posts: results.data.children,
-        before: results.data.before,
         after: results.data.after
       })
     })
   }
   componentDidUpdate(prevProps, prevState){
     if(prevState.sortby !== this.state.sortby){
-      Client.get(this.state.sortby, (results) =>{
-        this.setState({
-          posts: results.data.children,
-          before: results.data.before,
-          after: results.data.after
-        })
+      Client.get(this.state.sortby, {},(results) =>{
+        if(results.data){
+          this.setState({
+            posts: results.data.children,
+            after: results.data.after
+          })
+        }
       })
     }
   }
-
+  handleClick(type){
+    const options = {
+      [type]: this.state[type]
+    }
+    Client.get(this.state.sortby,options,(results) =>{
+      if(results.data){
+        this.setState({
+          posts: results.data.children,
+          after: results.data.after
+        })
+      }
+    })
+  }
   handleChange = event => {
-    console.log(event)
     this.setState({ [event.target.name]: event.target.value });
   };
   render(){
@@ -59,8 +69,10 @@ class PostsPage extends Component{
           <PostsList 
             posts={this.state.posts}
             selectPost={this.props.selectPost}
-             />
-            }
+            handleClick={this.handleClick.bind(this)}
+            after={this.state.after}
+            before={this.state.before}
+            />
         </Grid>
       </Grid>      
     )

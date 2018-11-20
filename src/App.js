@@ -9,9 +9,9 @@ class App extends Component {
       selectedPost: null
     }
   }
-  selectPost(uniqueID){
+  selectPost(post){
     this.setState({
-      selectedPost: uniqueID
+      selectedPost: post
     })
   }
   render() {

@@ -1,5 +1,5 @@
-function get(sortby, cb) {
-  const uri = `https://www.reddit.com/r/subreddit/${sortby}.json?sort=${sortby}&raw_json=1`
+function get(sortby, options,  cb) {
+  const uri = `https://www.reddit.com/r/all/${sortby}.json?nsfw=0&raw_json=1` + stringifyParams(options); 
   return fetch(uri, {
     accept: "application/json"
   })
@@ -7,7 +7,16 @@ function get(sortby, cb) {
     .then(parseJSON)
     .then(cb);
 }
-
+// Yes, I know about npm query-string, but I had had problems with it on build in the past
+function stringifyParams(opts){
+  var queryStringArray = [];
+  for(var key in opts){
+    if(opts.hasOwnProperty(key)){
+      queryStringArray.push((key + '=' + opts[key])); 
+    }
+  }
+  return '&' + queryStringArray.join('&');
+}
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response;

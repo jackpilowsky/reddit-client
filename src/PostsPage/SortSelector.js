@@ -18,7 +18,7 @@ const styles = theme => ({
 });
 
 const endpoints = [
-  'new', 'hot', 'random', 'top' 
+  'new', 'hot', 'rising', 'controversial',  'top' 
 ];
 
 
